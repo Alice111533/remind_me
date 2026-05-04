@@ -19,6 +19,8 @@ jobs:
         with:
           flutter-version: '3.16.0'
           channel: 'stable'
+      - name: Fix Gradle wrapper
+        run: cd android && ./gradlew wrapper --gradle-version 8.3 --distribution-type all && cd ..
       - run: flutter pub get
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
