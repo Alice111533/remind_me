@@ -1,5 +1,4 @@
 name: Build APK
-
 on:
   push:
     branches: [ main ]
@@ -9,11 +8,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+
+      # 1. 配置安卓JDK
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 2. 配置Flutter（锁定兼容版本）
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.13.0'
+          channel: stable
+
+      # 3. 下载依赖
       - run: flutter pub get
+
+      # 4. 编译安卓APK
       - run: flutter build apk --release
+
+      # 5. 上传成品
       - uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
