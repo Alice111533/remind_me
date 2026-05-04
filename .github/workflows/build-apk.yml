@@ -9,22 +9,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 安卓编译必须JDK17，固定不变
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Flutter 3.13.0 → 配套 Dart 3.1.0，完美匹配
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'
+          flutter-version: '3.16.0'
           channel: stable
 
-      # 自动生成安卓工程，补齐缺失文件
-      - name: Initialize Android Project
+      - name: Initialize Android
         run: flutter create --platforms android .
 
       - run: flutter pub get
@@ -32,5 +29,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: app-release.apk
+          name: app-release
           path: build/app/outputs/flutter-apk/app-release.apk
